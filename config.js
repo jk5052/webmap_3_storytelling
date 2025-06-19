@@ -16,8 +16,8 @@ var config = {
             image: './img/global_overview.jpg',
             description: 'Sea-level rise and climate extremes pose threats worldwide.',
             location: { center: [-74.0, 40.7], zoom: 3, pitch: 0, bearing: 0 },
-            onChapterEnter: [],
-            onChapterExit: []
+            onChapterEnter: [{ layer: 'geo-export-7g8024', opacity: 0.6 }],
+            onChapterExit: [{ layer: 'geo-export-7g8024', opacity: 0.6 }]
         },
         {
             id: 'sandy-flood-zone',
