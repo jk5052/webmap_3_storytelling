@@ -7,49 +7,68 @@
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
     <script src="https://unpkg.com/scrollama"></script>
-
     <style>
-      body { margin: 0; padding: 0; font-family: sans-serif; overflow: hidden; }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
 
-      #map {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 33%; 
-        width: 67%; 
-      }
+        #map {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100vh;
+        }
 
-      #story {
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 20px;
-        width: 33%; 
-        height: 100%;
-        overflow-y: scroll;
-        background-color: rgba(255,255,255,0.9);
-        z-index: 10; 
-      }
+        #story {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 33vw;
+            max-width: 450px;
+            height: 100vh;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: rgba(255,255,255,0.9);
+            z-index: 10;
+        }
 
-      .step {
-        margin-bottom: 50vh; 
-        opacity: 0.2;
-        transition: opacity 0.3s;
-      }
+        .step {
+            margin-bottom: 50vh;
+            opacity: 0.25;
+            transition: opacity 0.3s;
+        }
 
-      .step.active {
-        opacity: 1;
-      }
+        .step.active {
+            opacity: 0.9;
+        }
 
-      .step img {
-        width: 100%;
-        margin-bottom: 10px;
-      }
+        .step img {
+            width: 100%;
+            margin-bottom: 10px;
+        }
 
-      h3 {
-        margin-top: 0;
-      }
+        h3 {
+            margin-top: 0;
+        }
+
+        @media (max-width: 750px) {
+            #story {
+                width: 100%;
+                max-width: none;
+                height: 40vh;
+                bottom: 0;
+                top: auto;
+            }
+            #map {
+                height: 60vh;
+                top: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -81,7 +100,7 @@ map.on("load", function() {
         id: 'geo-export-7g8024',
         type: 'fill',
         source: 'geo-export-7g8024',
-        paint: { 'fill-color': '#FF0000', 'fill-opacity': 0 } 
+        paint: { 'fill-color': '#FF0000', 'fill-opacity': 0 }
     });
 
     map.addSource('greenroofdata2016-20180917-4qmirf', {
@@ -93,7 +112,7 @@ map.on("load", function() {
         id: 'greenroofdata2016-20180917-4qmirf',
         type: 'fill',
         source: 'greenroofdata2016-20180917-4qmirf',
-        paint: { 'fill-color': '#00FF00', 'fill-opacity': 0 } 
+        paint: { 'fill-color': '#00FF00', 'fill-opacity': 0 }
     });
 
     var scroller = scrollama();
@@ -115,7 +134,7 @@ map.on("load", function() {
     });
 });
 
-// 콘텐츠 생성 코드
+// 콘텐츠 자동 생성
 var story = document.getElementById('story');
 config.chapters.forEach(chap => {
     var step = document.createElement('div');
@@ -125,7 +144,7 @@ config.chapters.forEach(chap => {
     story.appendChild(step);
 });
 </script>
-
 </body>
 </html>
+
 
