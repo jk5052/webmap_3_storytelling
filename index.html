@@ -6,69 +6,21 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
-    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
     <script src="https://unpkg.com/scrollama"></script>
     <style>
-        body {
-            margin:0; 
-            padding:0; 
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            color: #404040;
-            background-color: #fff;
-        }
-
-        #map {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-
-        #story {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            width: 33%;
-            overflow-y: scroll;
-            padding: 20px;
-            background-color: rgba(255,255,255,0.9);
-            z-index: 1000;
-        }
-
-        .step {
-            margin-bottom: 40vh;
-            opacity: 0.2;
-            transition: opacity 0.3s;
-        }
-
-        .step.active {
-            opacity: 1;
-        }
-
-        .step img {
-            width: 100%;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            margin-top: 0;
-            font-size: 1.5em;
-        }
-
-        p {
-            margin-top: 0;
-        }
+        body { margin:0; padding:0; font-family: sans-serif; }
+        #map { position:fixed; top:0; bottom:0; width:100%; }
+        #story { position:absolute; top:0; left:0; padding:20px; width:33%; height:100%; overflow-y:scroll; }
+        .step { margin-bottom:40vh; opacity:0.2; }
+        .step.active { opacity:1; }
+        .step img { width:100%; }
     </style>
 </head>
-
 <body>
 <div id="map"></div>
 <div id="story"></div>
 
 <script src="./config.js"></script>
-
 <script>
 mapboxgl.accessToken = config.accessToken;
 
@@ -82,43 +34,37 @@ var map = new mapboxgl.Map({
     interactive: false
 });
 
-var scroller = scrollama();
-
 map.on("load", function() {
-
-    // 데이터 레이어 추가 (교수님이 설정한 레이어 ID 사용)
-    map.addSource('sandy_zone', {
+    map.addSource('geo-export-7g8024', {
         type: 'geojson',
-        data: './data/geo_export_.geojson'
+        data: './data/geo-export-7g8024.geojson'
     });
 
     map.addLayer({
-        id: 'geo-export-7g8024', // Mapbox Studio에서 확인한 레이어 ID
+        id: 'geo-export-7g8024',
         type: 'fill',
-        source: 'sandy_zone',
+        source: 'geo-export-7g8024',
         paint: { 'fill-color': '#FF0000', 'fill-opacity': 0 }
     });
 
-    map.addSource('green_roofs', {
+    map.addSource('greenroofdata2016-20180917-4qmirf', {
         type: 'geojson',
-        data: './data/GreenRoofData2016-20180917.geojson'
+        data: './data/greenroofdata2016-20180917-4qmirf.geojson'
     });
 
     map.addLayer({
-        id: 'greenroofdata2016-20180917-4qmirf', // Mapbox Studio에서 확인한 레이어 ID
+        id: 'greenroofdata2016-20180917-4qmirf',
         type: 'fill',
-        source: 'green_roofs',
+        source: 'greenroofdata2016-20180917-4qmirf',
         paint: { 'fill-color': '#00FF00', 'fill-opacity': 0 }
     });
 
-    // Scrollama 설정
-    scroller
-    .setup({ step: '.step', offset: 0.5 })
+    var scroller = scrollama();
+    scroller.setup({ step: '.step', offset: 0.5 })
     .onStepEnter(response => {
         var chapter = config.chapters.find(chap => chap.id === response.element.id);
         response.element.classList.add('active');
         map.flyTo(chapter.location);
-
         chapter.onChapterEnter.forEach(layer => {
             map.setPaintProperty(layer.layer, 'fill-opacity', layer.opacity);
         });
@@ -128,26 +74,12 @@ map.on("load", function() {
     });
 });
 
-// 스토리 콘텐츠 생성
 var story = document.getElementById('story');
-
 config.chapters.forEach(chap => {
     var step = document.createElement('div');
     step.setAttribute('id', chap.id);
     step.classList.add('step');
-
-    var title = document.createElement('h2');
-    title.innerText = chap.title;
-    step.appendChild(title);
-
-    var img = new Image();
-    img.src = chap.image;
-    step.appendChild(img);
-
-    var desc = document.createElement('p');
-    desc.innerHTML = chap.description;
-    step.appendChild(desc);
-
+    step.innerHTML = `<h3>${chap.title}</h3><img src="${chap.image}"><p>${chap.description}</p>`;
     story.appendChild(step);
 });
 </script>
