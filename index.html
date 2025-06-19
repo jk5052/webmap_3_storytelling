@@ -4,75 +4,24 @@
     <meta charset='utf-8' />
     <title>NYC Climate Resilience Story</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
     <script src="https://unpkg.com/scrollama"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: sans-serif;
-        }
-
-        #map {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100vh;
-        }
-
+        body { margin: 0; padding: 0; font-family: sans-serif; overflow: hidden; }
+        #map { position: fixed; top: 0; bottom: 0; width: 100%; }
         #story {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 33vw;
-            max-width: 450px;
-            height: 100vh;
-            padding: 20px;
-            overflow-y: auto;
-            background-color: rgba(255,255,255,0.9);
+            position: absolute; top: 0; left: 0;
+            width: 33vw; max-width: 400px; height: 100vh;
+            padding: 20px; overflow-y: auto; background: rgba(255,255,255,0.9);
             z-index: 10;
         }
-
-        .step {
-            margin-bottom: 50vh;
-            opacity: 0.25;
-            transition: opacity 0.3s;
-        }
-
-        .step.active {
-            opacity: 0.9;
-        }
-
-        .step img {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
-        h3 {
-            margin-top: 0;
-        }
-
-        @media (max-width: 750px) {
-            #story {
-                width: 100%;
-                max-width: none;
-                height: 40vh;
-                bottom: 0;
-                top: auto;
-            }
-            #map {
-                height: 60vh;
-                top: 0;
-            }
-        }
+        .step { margin-bottom: 50vh; opacity: 0.25; }
+        .step.active { opacity: 0.9; }
+        .step img { width: 100%; margin-bottom: 10px; }
     </style>
 </head>
 <body>
-
 <div id="map"></div>
 <div id="story"></div>
 
@@ -90,32 +39,9 @@ var map = new mapboxgl.Map({
     interactive: false
 });
 
-map.on("load", function() {
-    map.addSource('geo-export-7g8024', {
-        type: 'geojson',
-        data: './data/geo-export-7g8024.geojson'
-    });
-
-    map.addLayer({
-        id: 'geo-export-7g8024',
-        type: 'fill',
-        source: 'geo-export-7g8024',
-        paint: { 'fill-color': '#FF0000', 'fill-opacity': 0 }
-    });
-
-    map.addSource('greenroofdata2016-20180917-4qmirf', {
-        type: 'geojson',
-        data: './data/greenroofdata2016-20180917-4qmirf.geojson'
-    });
-
-    map.addLayer({
-        id: 'greenroofdata2016-20180917-4qmirf',
-        type: 'fill',
-        source: 'greenroofdata2016-20180917-4qmirf',
-        paint: { 'fill-color': '#00FF00', 'fill-opacity': 0 }
-    });
-
+map.on('load', function() {
     var scroller = scrollama();
+
     scroller.setup({ step: '.step', offset: 0.5 })
     .onStepEnter(response => {
         var chapter = config.chapters.find(chap => chap.id === response.element.id);
@@ -132,16 +58,16 @@ map.on("load", function() {
             map.setPaintProperty(layer.layer, 'fill-opacity', layer.opacity);
         });
     });
-});
 
-// 콘텐츠 자동 생성
-var story = document.getElementById('story');
-config.chapters.forEach(chap => {
-    var step = document.createElement('div');
-    step.setAttribute('id', chap.id);
-    step.classList.add('step');
-    step.innerHTML = `<h3>${chap.title}</h3><img src="${chap.image}"><p>${chap.description}</p>`;
-    story.appendChild(step);
+    // 콘텐츠 자동 생성
+    var story = document.getElementById('story');
+    config.chapters.forEach(chap => {
+        var step = document.createElement('div');
+        step.setAttribute('id', chap.id);
+        step.classList.add('step');
+        step.innerHTML = `<h3>${chap.title}</h3><img src="${chap.image}"><p>${chap.description}</p>`;
+        story.appendChild(step);
+    });
 });
 </script>
 </body>
