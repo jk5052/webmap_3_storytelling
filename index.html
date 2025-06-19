@@ -9,20 +9,66 @@
     <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
     <script src="https://unpkg.com/scrollama"></script>
     <style>
-        body { margin:0; padding:0; font-family: sans-serif; }
-        #map { top:0; height: 100vh; width:100vw; position: fixed; }
-        #story { position: relative; }
-        .step { padding: 50vh 2vw; opacity: 0.25; }
-        .step.active { opacity: 0.9; }
-        .step img { width: 100%; }
+        body {
+            margin:0; 
+            padding:0; 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #404040;
+            background-color: #fff;
+        }
+
+        #map {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #story {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 33%;
+            overflow-y: scroll;
+            padding: 20px;
+            background-color: rgba(255,255,255,0.9);
+            z-index: 1000;
+        }
+
+        .step {
+            margin-bottom: 40vh;
+            opacity: 0.2;
+            transition: opacity 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+        }
+
+        .step img {
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+        }
+
+        p {
+            margin-top: 0;
+        }
     </style>
 </head>
-<body>
 
+<body>
 <div id="map"></div>
 <div id="story"></div>
 
 <script src="./config.js"></script>
+
 <script>
 mapboxgl.accessToken = config.accessToken;
 
@@ -39,28 +85,15 @@ var map = new mapboxgl.Map({
 var scroller = scrollama();
 
 map.on("load", function() {
-    scroller
-    .setup({ step: '.step', offset: 0.5 })
-    .onStepEnter(response => {
-        var chapter = config.chapters.find(chap => chap.id === response.element.id);
-        response.element.classList.add('active');
-        map.flyTo(chapter.location);
-        chapter.onChapterEnter.forEach(layer => {
-            map.setPaintProperty(layer.layer, 'fill-opacity', layer.opacity);
-        });
-    })
-    .onStepExit(response => {
-        response.element.classList.remove('active');
-    });
 
-    // 데이터 레이어 추가
+    // 데이터 레이어 추가 (교수님이 설정한 레이어 ID 사용)
     map.addSource('sandy_zone', {
         type: 'geojson',
         data: './data/geo_export_.geojson'
     });
 
     map.addLayer({
-        id: 'sandy_zone_layer',
+        id: 'geo-export-7g8024', // Mapbox Studio에서 확인한 레이어 ID
         type: 'fill',
         source: 'sandy_zone',
         paint: { 'fill-color': '#FF0000', 'fill-opacity': 0 }
@@ -72,14 +105,30 @@ map.on("load", function() {
     });
 
     map.addLayer({
-        id: 'green_roofs_layer',
+        id: 'greenroofdata2016-20180917-4qmirf', // Mapbox Studio에서 확인한 레이어 ID
         type: 'fill',
         source: 'green_roofs',
         paint: { 'fill-color': '#00FF00', 'fill-opacity': 0 }
     });
+
+    // Scrollama 설정
+    scroller
+    .setup({ step: '.step', offset: 0.5 })
+    .onStepEnter(response => {
+        var chapter = config.chapters.find(chap => chap.id === response.element.id);
+        response.element.classList.add('active');
+        map.flyTo(chapter.location);
+
+        chapter.onChapterEnter.forEach(layer => {
+            map.setPaintProperty(layer.layer, 'fill-opacity', layer.opacity);
+        });
+    })
+    .onStepExit(response => {
+        response.element.classList.remove('active');
+    });
 });
 
-// 스토리 컨텐츠 생성
+// 스토리 콘텐츠 생성
 var story = document.getElementById('story');
 
 config.chapters.forEach(chap => {
@@ -101,8 +150,6 @@ config.chapters.forEach(chap => {
 
     story.appendChild(step);
 });
-
 </script>
-
 </body>
 </html>
