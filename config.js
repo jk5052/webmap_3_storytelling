@@ -1,6 +1,6 @@
 var config = {
-    style: 'mapbox://styles/jaycek/cmc2c2l8700bj01sogdsk2ldu', 
-    accessToken: 'pk.eyJ1IjoiamF5Y2VrIiwiYSI6ImNtYzB0N2RsdzA2MXgya3IzbGM1OTg0bTMifQ.2iyCIDuQTc7gkqtgG6f3Ew',
+    style: 'mapbox://styles/jaycek/cmc2c2l8700bj01sogdsk2ldu',
+    accessToken: 'pk.eyJ1IjoiamF5Y2VrIiwiYSI6ImNtYzB0N2RsdzA2MXgya3IzbGM1OTg0bTMifQ.2iyCIDuQTc7gkqtgG6f3Ew',  
     showMarkers: false,
     theme: 'light',
     use3dTerrain: false,
@@ -16,8 +16,8 @@ var config = {
             image: './img/global_overview.jpg',
             description: 'Sea-level rise and climate extremes pose threats worldwide.',
             location: { center: [-74.0, 40.7], zoom: 3, pitch: 0, bearing: 0 },
-            onChapterEnter: [{ layer: 'geo-export-7g8024', opacity: 0.6 }],
-            onChapterExit: [{ layer: 'geo-export-7g8024', opacity: 0.6 }]
+            onChapterEnter: [],
+            onChapterExit: []
         },
         {
             id: 'sandy-flood-zone',
@@ -26,8 +26,8 @@ var config = {
             image: './img/sandy_impact_nyc.jpg',
             description: 'Areas inundated during Sandy.',
             location: { center: [-74.0, 40.72], zoom: 11, pitch: 45, bearing: -10 },
-            onChapterEnter: [{ layer: 'geo-export-7g8024', opacity: 0.6 }],
-            onChapterExit: [{ layer: 'geo-export-7g8024', opacity: 0 }]
+            onChapterEnter: [{ layer: 'geo-export-7g8024-2e3qxf', opacity: 0.6 }],
+            onChapterExit: [{ layer: 'geo-export-7g8024-2e3qxf', opacity: 0 }]
         },
         {
             id: 'nyc-green-roofs',

@@ -1,62 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8' />
     <title>NYC Climate Resilience Story</title>
+    <meta charset='utf-8'>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet'/>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js'></script>
     <script src="https://unpkg.com/scrollama"></script>
-    <style>
-        body { margin:0; padding:0; font-family: sans-serif; }
-        #map { position: fixed; top:0; bottom:0; width:100%; height:100%; }
-        #story {
-            position: absolute; top:0; left:0;
-            width:33%; height:100%; padding:20px;
-            overflow-y: auto; background-color:rgba(255,255,255,0.9);
-            z-index: 10;
-        }
-        .step { margin-bottom:50vh; opacity:0.25; }
-        .step.active { opacity:0.9; }
-        .step img { width:100%; margin-bottom:10px; }
-    </style>
+    <link rel="stylesheet" href="./style.css"> <!-- 별도 CSS 파일 -->
 </head>
 <body>
-
-<div id="map"></div>
-<div id="story"></div>
-
-<script src="./config.js"></script>
+<div id='map'></div>
+<div id='story'></div>
+<script src='./config.js'></script>
 <script>
-mapboxgl.accessToken = config.accessToken;
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: config.style,
+        center: config.chapters[0].location.center,
+        zoom: config.chapters[0].location.zoom,
+        pitch: config.chapters[0].location.pitch,
+        bearing: config.chapters[0].location.bearing,
+        interactive: false
+    });
 
-var map = new mapboxgl.Map({
-    container: 'map',
-    style: config.style,
-    center: config.chapters[0].location.center,
-    zoom: config.chapters[0].location.zoom,
-    pitch: config.chapters[0].location.pitch,
-    bearing: config.chapters[0].location.bearing,
-    interactive: false
-});
-
-map.on('load', function() {
-    var scroller = scrollama();
-    scroller.setup({step:'.step', offset:0.5})
-    .onStepEnter(response => {
-        var chapter = config.chapters.find(chap => chap.id === response.element.id);
-        response.element.classList.add('active');
-        map.flyTo(chapter.location);
-        chapter.onChapterEnter.forEach(layer => {
-            map.setPaintProperty(layer.layer, 'fill-opacity', layer.opacity);
-        });
-    })
-    .onStepExit(response => {
-        response.element.classList.remove('active');
-        var chapter = config.chapters.find(chap => chap.id === response.element.id);
-        chapter.onChapterExit.forEach(layer => {
-            map.setPaintProperty(layer.layer, 'fill-opacity', layer.opacity);
-        });
+    map.on('load', function() {
+        var scroller = scrollama();
+        scroller.setup({ step: '.step', offset: 0.5 })
+            .onStepEnter(response => {
+                var chapter = config.chapters.find(chap => chap.id === response.element.id);
+                response.element.classList.add('active');
+                map.flyTo(chapter.location);
+                chapter.onChapterEnter.forEach(layer => {
+                    map.setPaintProperty(layer.layer, 'fill-opacity', layer.opacity);
+                });
+            })
+            .onStepExit(response => {
+                response.element.classList.remove('active');
+            });
     });
 
     var story = document.getElementById('story');
@@ -67,11 +48,10 @@ map.on('load', function() {
         step.innerHTML = `<h3>${chap.title}</h3><img src="${chap.image}"><p>${chap.description}</p>`;
         story.appendChild(step);
     });
-});
 </script>
-
 </body>
 </html>
+
 
 
 
