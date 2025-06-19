@@ -8,20 +8,21 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' rel='stylesheet' />
     <script src="https://unpkg.com/scrollama"></script>
     <style>
-        body { margin: 0; padding: 0; font-family: sans-serif; overflow: hidden; }
-        #map { position: fixed; top: 0; bottom: 0; width: 100%; }
+        body { margin:0; padding:0; font-family: sans-serif; }
+        #map { position: fixed; top:0; bottom:0; width:100%; height:100%; }
         #story {
-            position: absolute; top: 0; left: 0;
-            width: 33vw; max-width: 400px; height: 100vh;
-            padding: 20px; overflow-y: auto; background: rgba(255,255,255,0.9);
+            position: absolute; top:0; left:0;
+            width:33%; height:100%; padding:20px;
+            overflow-y: auto; background-color:rgba(255,255,255,0.9);
             z-index: 10;
         }
-        .step { margin-bottom: 50vh; opacity: 0.25; }
-        .step.active { opacity: 0.9; }
-        .step img { width: 100%; margin-bottom: 10px; }
+        .step { margin-bottom:50vh; opacity:0.25; }
+        .step.active { opacity:0.9; }
+        .step img { width:100%; margin-bottom:10px; }
     </style>
 </head>
 <body>
+
 <div id="map"></div>
 <div id="story"></div>
 
@@ -41,8 +42,7 @@ var map = new mapboxgl.Map({
 
 map.on('load', function() {
     var scroller = scrollama();
-
-    scroller.setup({ step: '.step', offset: 0.5 })
+    scroller.setup({step:'.step', offset:0.5})
     .onStepEnter(response => {
         var chapter = config.chapters.find(chap => chap.id === response.element.id);
         response.element.classList.add('active');
@@ -59,7 +59,6 @@ map.on('load', function() {
         });
     });
 
-    // 콘텐츠 자동 생성
     var story = document.getElementById('story');
     config.chapters.forEach(chap => {
         var step = document.createElement('div');
@@ -70,7 +69,9 @@ map.on('load', function() {
     });
 });
 </script>
+
 </body>
 </html>
+
 
 
