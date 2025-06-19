@@ -14,7 +14,7 @@ var config = {
         id: 'global-intro',
         alignment: 'center',
         title: 'Global Climate Crisis',
-        image: './img/global_overview.jpg',
+        image: './image/global_overview.jpg',
         description: 'Sea-level rise and climate extremes pose threats worldwide.',
         location: {
           center: [-74.0, 40.7],
@@ -32,7 +32,7 @@ var config = {
         id: 'sandy-flood-zone',
         alignment: 'left',
         title: 'Impact of Hurricane Sandy',
-        image: './img/sandy_impact_nyc.jpg',
+        image: './image/sandy_impact_nyc.jpg',
         description: 'Areas of New York City inundated during Hurricane Sandy.',
         location: {
           center: [-74.0, 40.72],
@@ -51,7 +51,7 @@ var config = {
         id: 'nyc-green-roofs',
         alignment: 'right',
         title: 'NYC Green Roof Initiatives',
-        image: './img/nyc_green_roofs.jpg',
+        image: './image/nyc_green_roofs.jpg',
         description: 'Green roofs have become vital for urban resilience, reducing runoff and cooling the city.',
         location: {
           center: [-73.95, 40.75],
@@ -70,7 +70,7 @@ var config = {
         id: 'conclusion',
         alignment: 'center',
         title: 'Building Climate Resilience',
-        image: './img/global_overview.jpg',
+        image: './image/global_overview.jpg',
         description: 'New York’s initiatives demonstrate how cities worldwide can prepare for climate change.',
         location: {
           center: [-74.0, 40.73],
